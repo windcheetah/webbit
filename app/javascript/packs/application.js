@@ -8,6 +8,8 @@ require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
 
+import "../components/tabs"
+import "../components/dropdown"
 require("stylesheets/application")
 
 

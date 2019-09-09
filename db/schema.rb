@@ -10,7 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_05_044953) do
+ActiveRecord::Schema.define(version: 2019_09_05_025913) do
+
+  create_table "communities", force: :cascade do |t|
+    t.string "name"
+    t.string "title"
+    t.text "description"
+    t.text "sidebar"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id"
+    t.index ["name"], name: "index_communities_on_name", unique: true
+    t.index ["user_id"], name: "index_communities_on_user_id"
+  end
+
+  create_table "submissions", force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.string "url"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.string "submission_image"
+    t.string "submission_video"
+    t.integer "user_id"
+    t.integer "community_id"
+    t.index ["community_id"], name: "index_submissions_on_community_id"
+    t.index ["user_id"], name: "index_submissions_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
@@ -20,8 +46,13 @@ ActiveRecord::Schema.define(version: 2019_08_05_044953) do
     t.datetime "remember_created_at"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["username"], name: "index_users_on_username", unique: true
   end
 
+  add_foreign_key "communities", "users"
+  add_foreign_key "submissions", "communities"
+  add_foreign_key "submissions", "users"
 end
